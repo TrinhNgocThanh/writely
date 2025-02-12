@@ -1,6 +1,7 @@
 import { MaterialSymbolsMoreHoriz } from '@/components/icon/more'
+import { Popover } from 'antd'
 import i18next from 'i18next'
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useRef } from 'react'
 import { RightArrowIcon } from '../../../../components/icon'
 
 export type ListProps = {
@@ -15,8 +16,6 @@ export type ListProps = {
 }
 
 export const List: React.FC<ListProps> = ({ items, onClick, max }) => {
-  const [openPopover, setOpenPopover] = useState<number | null>(null)
-
   const handleClick = useCallback(
     (item) => {
       if (item.children) {
@@ -46,39 +45,33 @@ export const List: React.FC<ListProps> = ({ items, onClick, max }) => {
         }
 
         return (
-          <div
+          <Popover
             key={index}
-            className="relative"
-            onMouseEnter={() => setOpenPopover(index)}
-            onMouseLeave={() => setOpenPopover(null)}
+            placement="right"
+            getPopupContainer={(e) => e.parentElement}
+            content={<List items={item.children} onClick={handleClick} />}
           >
-            {itemEle}
-            {openPopover === index && (
-              <div className="absolute left-full top-0 ml-2 bg-white shadow-lg rounded-md">
-                <List items={item.children} onClick={handleClick} />
-              </div>
-            )}
-          </div>
+            <div>{itemEle}</div>
+          </Popover>
         )
       })}
       {shouldShowMore ? (
-        <div
-          className="relative"
-          onMouseEnter={() => setOpenPopover(maxShownItem)}
-          onMouseLeave={() => setOpenPopover(null)}
+        <Popover
+          placement="left"
+          getPopupContainer={(e) => e.parentElement}
+          content={
+            <List items={items.slice(maxShownItem)} onClick={handleClick} />
+          }
         >
-          <Item
-            item={{
-              icon: <MaterialSymbolsMoreHoriz />,
-              label: i18next.t('More'),
-            }}
-          />
-          {openPopover === maxShownItem && (
-            <div className="absolute left-full top-0 ml-2 bg-white shadow-lg rounded-md">
-              <List items={items.slice(maxShownItem)} onClick={handleClick} />
-            </div>
-          )}
-        </div>
+          <div>
+            <Item
+              item={{
+                icon: <MaterialSymbolsMoreHoriz />,
+                label: i18next.t('More'),
+              }}
+            />
+          </div>
+        </Popover>
       ) : null}
     </div>
   )
@@ -93,7 +86,7 @@ const Item: React.FC<{ item: any; onClick?: (item: any) => void }> = ({
   return (
     <div
       onClick={() => onClick?.(item)}
-      className="h-7 hover:bg-zinc-200 rounded-none hover:rounded-sm flex items-center justify-between text-[13px] hover:text-[14px] cursor-pointer px-1.5 transition-all duration-300"
+      className="h-7 hover:bg-zinc-200 rounded-none hover:rounded-md flex items-center justify-between text-[13px] hover:text-[14px] cursor-pointer px-1.5 transition-all duration-300"
     >
       <div className="flex items-center gap-1 overflow-hidden text-ellipsis whitespace-nowrap">
         <span className="text-amber-600 text-base h-4">{item.icon}</span>{' '}

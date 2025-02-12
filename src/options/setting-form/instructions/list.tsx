@@ -5,51 +5,30 @@ import { IcBaselineDeleteOutline } from '@/components/icon/delete'
 import { MaterialSymbolsEditOutline } from '@/components/icon/edit'
 import { MaterialSymbolsArrowUpward } from '@/components/icon/up'
 import { Instruction } from '@/options/types'
+import {
+  Popconfirm,
+  Popover,
+  Table,
+  TableProps,
+  Tooltip,
+  Typography,
+} from 'antd'
 import i18next from 'i18next'
 import { useModalState } from './modal-state'
-import { useState } from 'react'
+
+const { Paragraph } = Typography
 
 export const List: React.FC<{ value: Instruction[] }> = ({ value }) => {
   const columns = useColumns()
 
-  return (
-    <table className="min-w-full divide-y divide-gray-200">
-      <thead className="bg-gray-50">
-        <tr>
-          {columns.map((column) => (
-            <th
-              key={column.title}
-              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-            >
-              {column.title}
-            </th>
-          ))}
-        </tr>
-      </thead>
-      <tbody className="bg-white divide-y divide-gray-200">
-        {value.map((record) => (
-          <tr key={record.id}>
-            {columns.map((column) => (
-              <td key={column.title} className="px-6 py-4 whitespace-nowrap">
-                {column.render
-                  ? column.render(null, record)
-                  : record[column.dataIndex]}
-              </td>
-            ))}
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  )
+  return <Table columns={columns} dataSource={value} rowKey={'id'} />
 }
 
 const useColumns = () => {
   const { refresh } = useSettings()
   const { setIsOpen, setEditTarget } = useModalState()
-  const [confirmDelete, setConfirmDelete] = useState(false)
-  const [deleteTarget, setDeleteTarget] = useState<Instruction | null>(null)
 
-  const columns = [
+  const columns: TableProps<Instruction>['columns'] = [
     {
       title: i18next.t('Icon'),
       dataIndex: 'icon',
@@ -57,46 +36,68 @@ const useColumns = () => {
     {
       title: i18next.t('Name'),
       dataIndex: 'name',
-      width: 120,
-      render: (value) => <p className="w-48 truncate">{value}</p>,
+      width: 200,
+      render: (value) => {
+        return (
+          <Paragraph className="w-48" ellipsis>
+            {value}
+          </Paragraph>
+        )
+      },
     },
     {
       title: i18next.t('Instruction'),
       dataIndex: 'instruction',
       width: 200,
-      render: (value) => <p className="w-48 truncate">{value}</p>,
+      render: (value) => {
+        return (
+          <Paragraph
+            className="w-48"
+            ellipsis={{ expandable: true, symbol: 'more' }}
+          >
+            {value}
+          </Paragraph>
+        )
+      },
     },
     {
-      title: i18next.t('/'),
-      render: (_, record) => (
-        <div className="flex gap-1">
-          <button
-            className="text-red-500"
-            onClick={() => {
-              setConfirmDelete(true)
-              setDeleteTarget(record)
-            }}
-          >
-            <IcBaselineDeleteOutline />
-          </button>
-          <button
-            onClick={() => {
-              setIsOpen(true)
-              setEditTarget(record)
-            }}
-          >
-            <MaterialSymbolsEditOutline />
-          </button>
-          <button
-            onClick={async () => {
-              await setTopPinned(record.id)
-              await refresh()
-            }}
-          >
-            <MaterialSymbolsArrowUpward />
-          </button>
-        </div>
-      ),
+      title: i18next.t('Actions'),
+      render: (_, record) => {
+        return (
+          <div className="flex gap-1">
+            <Popconfirm
+              title={i18next.t('Delete instruction')}
+              okText={i18next.t('Ok')}
+              onConfirm={async () => {
+                await remove(record.id)
+                await refresh()
+              }}
+            >
+              <IconBtn color="red">
+                <IcBaselineDeleteOutline />
+              </IconBtn>
+            </Popconfirm>
+            <IconBtn
+              onClick={() => {
+                setIsOpen(true)
+                setEditTarget(record)
+              }}
+            >
+              <MaterialSymbolsEditOutline />
+            </IconBtn>
+            <Popover content={i18next.t('Top pinned')} trigger="hover">
+              <IconBtn
+                onClick={async () => {
+                  await setTopPinned(record.id)
+                  await refresh()
+                }}
+              >
+                <MaterialSymbolsArrowUpward />
+              </IconBtn>
+            </Popover>
+          </div>
+        )
+      },
     },
   ]
 

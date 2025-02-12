@@ -1,90 +1,60 @@
+import { IconBtn } from '@/components/icon-btn'
+import { IcBaselineDeleteOutline } from '@/components/icon/delete'
+import { IcOutlineCheck } from '@/components/icon/update'
+import { Input } from 'antd'
+import { useControllableValue } from 'ahooks'
 import { useState } from 'react'
 
 export const CustomList: React.FC<{
   value?: string[]
   onChange?: (value: string[]) => void
 }> = (props) => {
-  const [value, setValue] = useState<string[]>(props.value || [])
+  const [value, setValue] = useControllableValue<string[]>(props, {
+    defaultValue: [],
+  })
   const [inputValue, setInputValue] = useState('')
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue(e.target.value)
-  }
-
-  const handleAddItem = () => {
-    if (inputValue.trim()) {
-      const newValue = [inputValue.trim(), ...value]
-      setValue(newValue)
-      props.onChange?.(newValue)
-      setInputValue('')
-    }
-  }
-
-  const handleRemoveItem = (item: string) => {
-    const newValue = value.filter((i) => i !== item)
-    setValue(newValue)
-    props.onChange?.(newValue)
-  }
 
   return (
     <div>
       <div className="flex gap-4 items-center">
-        <input
-          className="w-60 p-2 border border-gray-300 rounded"
+        <Input
+          className="w-60"
           value={inputValue}
-          onChange={handleInputChange}
-          onKeyPress={(e) => {
-            if (e.key === 'Enter') {
-              handleAddItem()
+          onChange={(e) => setInputValue(e.target.value)}
+          onPressEnter={() => {
+            if (inputValue.trim()) {
+              setValue([inputValue.trim(), ...(value || [])])
+              setInputValue('')
             }
           }}
         />
-        <button
-          className={`p-2 rounded ${
-            inputValue.trim()
-              ? 'bg-green-500 text-white'
-              : 'bg-gray-300 text-gray-500'
-          }`}
+        <IconBtn
+          color="green"
           disabled={!inputValue.trim()}
-          onClick={handleAddItem}
+          onClick={() => {
+            if (inputValue.trim()) {
+              setValue([inputValue.trim(), ...(value || [])])
+              setInputValue('')
+            }
+          }}
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-5 w-5"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-          >
-            <path
-              fillRule="evenodd"
-              d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-10.707a1 1 0 00-1.414-1.414L9 9.586 7.707 8.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-              clipRule="evenodd"
-            />
-          </svg>
-        </button>
+          <IcOutlineCheck />
+        </IconBtn>
       </div>
       <div className="flex flex-col gap-2 mt-2 max-h-56 overflow-auto">
-        {value.map((item) => (
-          <div key={item} className="flex gap-2 items-center">
-            <div>{item}</div>
-            <button
-              className="p-2 rounded bg-red-500 text-white"
-              onClick={() => handleRemoveItem(item)}
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
-                viewBox="0 0 20 20"
-                fill="currentColor"
+        {(value || []).map((p) => {
+          return (
+            <div className="flex gap-2">
+              <div>{p}</div>
+              <IconBtn
+                color="red"
+                onClick={() => setValue((value || []).filter((i) => i !== p))}
               >
-                <path
-                  fillRule="evenodd"
-                  d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-10.707a1 1 0 00-1.414-1.414L9 9.586 7.707 8.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                  clipRule="evenodd"
-                />
-              </svg>
-            </button>
-          </div>
-        ))}
+                <IcBaselineDeleteOutline />
+              </IconBtn>
+            </div>
+          )
+        })}
       </div>
     </div>
   )

@@ -109,8 +109,8 @@ const getPrompts = () => {
               icon: '🇬🇧 ',
             },
             {
-              label: i18n.t('Vietnamese'),
-              icon: '🇻🇳 ',
+              label: i18n.t('Chinese'),
+              icon: '🇨🇳 ',
             },
             {
               label: i18n.t('Japanese'),

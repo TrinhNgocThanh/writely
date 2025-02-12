@@ -1,14 +1,18 @@
 import { SettingsForm } from './setting-form'
 import { SettingsProvider } from '../common/store/settings'
+import { ConfigProvider } from 'antd'
+import { theme } from '../common/antd-theme'
 
 export const App: React.FC = () => {
   return (
-    <SettingsProvider>
-      <div className="flex justify-center min-h-screen min-w-full bg-gray-100">
-        <div className="w-full max-w-5xl p-4">
-          <SettingsForm />
+    <ConfigProvider theme={theme}>
+      <SettingsProvider>
+        <div className="flex justify-center min-h-[100vh] min-w-full">
+          <div className="w-[1280px]">
+            <SettingsForm />
+          </div>
         </div>
-      </div>
-    </SettingsProvider>
+      </SettingsProvider>
+    </ConfigProvider>
   )
 }

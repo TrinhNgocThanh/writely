@@ -1,5 +1,6 @@
 import { batchAdd } from '@/common/api/instructions'
 import { useSettings } from '@/common/store/settings'
+import { Button, message, Popover, Upload } from 'antd'
 import i18next from 'i18next'
 import { debounce } from 'lodash-es'
 import { useCallback, useState } from 'react'
@@ -7,7 +8,6 @@ import { useCallback, useState } from 'react'
 export const Import: React.FC = () => {
   const { refresh } = useSettings()
   const [loading, setLoading] = useState(false)
-  const [showPopover, setShowPopover] = useState(false)
 
   const handleUploadChange = useCallback(
     debounce(
@@ -18,9 +18,9 @@ export const Import: React.FC = () => {
           const json = JSON.parse(text)
           await batchAdd(json)
           await refresh()
-          alert(i18next.t('😄 Imported successfully'))
+          message.success(i18next.t('😄 Imported successfully'))
         } catch {
-          alert(i18next.t('😭 Error format'))
+          message.error(i18next.t('😭 Error format'))
         } finally {
           setLoading(false)
         }
@@ -32,30 +32,14 @@ export const Import: React.FC = () => {
   )
 
   return (
-    <div className="relative inline-block">
-      <button
-        className="bg-blue-500 text-white py-2 px-4 rounded"
-        onMouseEnter={() => setShowPopover(true)}
-        onMouseLeave={() => setShowPopover(false)}
-        disabled={loading}
-      >
-        {loading ? i18next.t('Loading...') : i18next.t('Import')}
-      </button>
-      {showPopover && (
-        <div className="absolute left-0 mt-2 w-48 bg-white border border-gray-300 p-2 rounded shadow-lg">
-          {i18next.t('Import instructions')}
-        </div>
-      )}
-      <input
-        type="file"
+    <Popover content={i18next.t('Import instructions')}>
+      <Upload
         accept=".json"
-        className="hidden"
-        onChange={(e) => {
-          if (e.target.files && e.target.files[0]) {
-            handleUploadChange(e.target.files[0])
-          }
-        }}
-      />
-    </div>
+        showUploadList={false}
+        onChange={({ file }) => handleUploadChange(file.originFileObj)}
+      >
+        <Button loading={loading}>{i18next.t('Import')}</Button>
+      </Upload>
+    </Popover>
   )
 }

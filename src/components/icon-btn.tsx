@@ -34,7 +34,7 @@ export const IconBtn: React.FC<
     <div
       className={cx(
         colorClass,
-        'transition-all duration-500 p-1 flex items-center justify-center hover:bg-slate-200 rounded-none hover:rounded-sm text-base bg-slate-100 cursor-pointer',
+        'transition-all duration-500 p-1 flex items-center justify-center hover:bg-slate-200 rounded-none hover:rounded-md text-base bg-slate-100 cursor-pointer',
         className
       )}
       onClick={onClick}

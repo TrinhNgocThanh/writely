@@ -1,17 +1,18 @@
 import { OpenAILogo } from '@/components/icon/open-ai'
 import { IconWritely } from '@/components/icon/writely'
+import { Card, Form, Popover, Radio, Spin, Tooltip } from 'antd'
 import i18next from 'i18next'
 import { ServiceProvider } from '../types'
 import classNames from 'classnames'
 import { MaterialSymbolsAddLink } from '@/components/icon/link'
 import { useUser } from '@/common/api/writely'
+import Link from 'antd/es/typography/Link'
 import { MaterialSymbolsCheckCircleRounded } from '@/components/icon/checked'
 import { ChatGPTIcon } from '@/components/icon/chatgpt'
 import { useChatGPTWebInfo } from '@/common/api/chatgpt-web'
-import { useState } from 'react'
 
 export const ProviderSetting: React.FC = () => {
-  const [value, setValue] = useState<ServiceProvider | null>(null)
+  const value = Form.useWatch('serviceProvider')
   const activeClassNames = 'bg-black text-white'
 
   const isCheckedWritely = value === ServiceProvider.Writely
@@ -19,80 +20,82 @@ export const ProviderSetting: React.FC = () => {
   const isCheckedChatGPT = value === ServiceProvider.ChatGPT
 
   return (
-    <div className="p-4 shadow-md rounded-md">
-      <h2 className="text-xl font-semibold">{i18next.t('Service Provider')}</h2>
-      <div className="mt-4">
-        <div className="flex justify-center w-full">
-          <label className="flex items-center cursor-pointer">
-            <input
-              type="radio"
-              name="serviceProvider"
-              value={ServiceProvider.Writely}
-              checked={isCheckedWritely}
-              onChange={() => setValue(ServiceProvider.Writely)}
-              className="hidden"
-            />
-            <div
-              className={classNames(
-                'flex gap-2 justify-center items-center py-3 px-5 rounded-full',
-                isCheckedWritely ? activeClassNames : ''
-              )}
-              style={{
-                boxShadow: isCheckedWritely ? '0px 3px rgb(252,211,77)' : '',
-              }}
-            >
-              <IconWritely className="h-11" />
-              <span className="font-semibold text-3xl">Writely</span>
-            </div>
-          </label>
-          <label className="flex items-center cursor-pointer ml-4">
-            <input
-              type="radio"
-              name="serviceProvider"
-              value={ServiceProvider.OpenAI}
-              checked={isCheckedOpenAI}
-              onChange={() => setValue(ServiceProvider.OpenAI)}
-              className="hidden"
-            />
-            <div
-              className={classNames(
-                'items-center py-3 px-5 rounded-full',
-                isCheckedOpenAI ? activeClassNames : ''
-              )}
-              style={{
-                boxShadow: isCheckedOpenAI ? '0px 3px rgb(252,211,77)' : '',
-              }}
-            >
-              <OpenAILogo className="h-11 w-auto" />
-            </div>
-          </label>
-          <label className="flex items-center cursor-pointer ml-4">
-            <input
-              type="radio"
-              name="serviceProvider"
-              value={ServiceProvider.ChatGPT}
-              checked={isCheckedChatGPT}
-              onChange={() => setValue(ServiceProvider.ChatGPT)}
-              className="hidden"
-            />
-            <div
-              className={classNames(
-                'items-center py-3 px-5 rounded-full flex gap-2',
-                isCheckedChatGPT ? activeClassNames : ''
-              )}
-              style={{
-                boxShadow: isCheckedChatGPT ? '0px 3px rgb(252,211,77)' : '',
-              }}
-            >
-              <ChatGPTIcon className="h-11 w-auto" />
-              <span className="font-semibold text-3xl">ChatGPT</span>
-            </div>
-          </label>
+    <Card title={i18next.t('Service Provider')} hoverable>
+      <Form.Item name="serviceProvider">
+        <div>
+          <Radio.Group
+            className="flex justify-center w-full"
+            onChange={(e) => console.log(e.target.value)}
+          >
+            <Radio value={ServiceProvider.Writely}>
+              <Tooltip
+                title={i18next.t(
+                  'Using the services provided by Writely, there are 10 free times per day'
+                )}
+              >
+                <div
+                  style={{
+                    boxShadow: isCheckedWritely
+                      ? '0px 3px rgb(252,211,77)'
+                      : '',
+                  }}
+                  className={classNames(
+                    'flex gap-2 justify-center items-center py-3 px-5 rounded-full',
+                    isCheckedWritely ? activeClassNames : ''
+                  )}
+                >
+                  <IconWritely className="h-11" />
+                  <span className="font-semibold text-3xl">Writely</span>
+                </div>
+              </Tooltip>
+            </Radio>
+            <Radio value={ServiceProvider.OpenAI}>
+              <Tooltip
+                title={i18next.t(
+                  'By using the services provided by OpenAI API Key, you can permanently use Writely software for free'
+                )}
+              >
+                <div
+                  style={{
+                    boxShadow: isCheckedOpenAI ? '0px 3px rgb(252,211,77)' : '',
+                  }}
+                  className={classNames(
+                    'items-center py-3 px-5 rounded-full',
+                    isCheckedOpenAI ? activeClassNames : ''
+                  )}
+                >
+                  <OpenAILogo className="h-11 w-auto" />
+                </div>
+              </Tooltip>
+            </Radio>
+            <Radio value={ServiceProvider.ChatGPT}>
+              <Tooltip
+                title={i18next.t(
+                  'Using the ChatGPT Web service is not recommended as it may carry the risk of being banned by OpenAI. Please consider this carefully. In case of account suspension, it is unrelated to Writely.'
+                )}
+              >
+                <div
+                  style={{
+                    boxShadow: isCheckedChatGPT
+                      ? '0px 3px rgb(252,211,77)'
+                      : '',
+                  }}
+                  className={classNames(
+                    'items-center py-3 px-5 rounded-full flex gap-2',
+                    isCheckedChatGPT ? activeClassNames : ''
+                  )}
+                >
+                  <ChatGPTIcon className="h-11 w-auto" />
+                  <span className="font-semibold text-3xl">ChatGPT</span>
+                </div>
+              </Tooltip>
+            </Radio>
+          </Radio.Group>
         </div>
-      </div>
+      </Form.Item>
       {isCheckedWritely ? <LinkToWritelySite /> : null}
       {isCheckedChatGPT ? <LinkToChatgptWeb /> : null}
-    </div>
+    </Card>
   )
 }
 
@@ -101,18 +104,18 @@ const LinkToWritelySite: React.FC = () => {
   const email = data?.data?.user?.email
 
   return (
-    <div className="flex py-4 border-t border-gray-300 text-xl gap-3 items-center justify-center">
+    <div className="flex py-4 border-border border-t text-xl gap-3 items-center justify-center">
       {isLoading ? (
-        <div className="spinner" />
+        <Spin spinning />
       ) : email ? (
         <div className="flex gap-1 items-center">
-          <a
+          <Link
             target="_blank"
             href="https://writely.miao-ya.com"
             className="text-lg"
           >
             {data?.data?.user?.email}
-          </a>
+          </Link>
           <span className="text-green-500">
             <MaterialSymbolsCheckCircleRounded />
           </span>
@@ -143,18 +146,18 @@ const LinkToChatgptWeb: React.FC = () => {
   const name = data?.user?.name || data?.user?.email
 
   return (
-    <div className="flex py-4 border-t border-gray-300 text-xl gap-3 items-center justify-center">
+    <div className="flex py-4 border-border border-t text-xl gap-3 items-center justify-center">
       {isLoading ? (
-        <div className="spinner" />
+        <Spin spinning />
       ) : name ? (
         <div className="flex gap-1 items-center">
-          <a
+          <Link
             target="_blank"
             href="https://chat.openai.com/"
             className="text-lg"
           >
             {name}
-          </a>
+          </Link>
           <span className="text-green-500">
             <MaterialSymbolsCheckCircleRounded />
           </span>
