@@ -1,28 +1,28 @@
-import { MaterialSymbolsContentCopyOutline } from '@/components/icon'
-import { BiFileCheck } from '@/components/icon/replace'
+import { IcOutlineCheck } from '@/components/icon/update'
+import { useResultPanel } from '@/content/container/store/result-panel'
 import { useSelectionManager } from '@/content/container/store/selection'
 import i18next from 'i18next'
 import { useCallback } from 'react'
 import { BaseAction } from './base-action'
 import { copy } from './copy'
 
-export const Replace: React.FC<{
+export const Insert: React.FC<{
   dom: React.MutableRefObject<HTMLDivElement>
 }> = ({ dom }) => {
   const selection = useSelectionManager()
 
-  const handleClick = useCallback(() => {
+  const handleClick = useCallback(async () => {
     copy(dom.current)
-    return selection.replace(dom.current.innerText)
+    return selection.append(dom.current?.innerText)
   }, [])
 
   return (
     <BaseAction
-      // tooltip={i18next.t('Replace content')}
-      // successTooltip={i18next.t('Replaced')}
+      tooltip={i18next.t('Insert content')}
+      successTooltip={i18next.t('Inserted')}
       onClick={handleClick}
     >
-      <BiFileCheck />
+      <IcOutlineCheck />
     </BaseAction>
   )
 }

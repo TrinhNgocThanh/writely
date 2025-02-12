@@ -4,11 +4,15 @@ import { useSelectionManager } from '../store/selection'
 import { useView } from '../store/view'
 import { Content } from './content'
 
+let fixedRef: MutableRefObject<HTMLDivElement>
+
 export const AskWritely: React.FC = () => {
   const selectionManager = useSelectionManager()
   const { position } = selectionManager
   const { viewStatus } = useView()
-  const fixedRef = useRef<HTMLDivElement>(null) // Khởi tạo ref đúng cách
+  const _fixedRef = useRef<HTMLDivElement>()
+
+  fixedRef = _fixedRef
 
   if (viewStatus === 'none') {
     return null
@@ -16,7 +20,7 @@ export const AskWritely: React.FC = () => {
 
   const content = (
     <div
-      ref={fixedRef}
+      ref={_fixedRef}
       style={{
         position: 'fixed',
         top: `${position.y}px`,
@@ -35,8 +39,6 @@ export const AskWritely: React.FC = () => {
   return <ReactDraggable handle=".handle">{content}</ReactDraggable>
 }
 
-// Hàm này trả về ref nếu tồn tại, tránh lỗi undefined
 export const getFixedDom = () => {
-  console.warn('getFixedDom được gọi, nhưng ref có thể chưa được gán.')
-  return null
+  return fixedRef.current
 }

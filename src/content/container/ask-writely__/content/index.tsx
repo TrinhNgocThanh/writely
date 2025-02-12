@@ -1,3 +1,4 @@
+import { Avatar, Button, Input, Tooltip } from 'antd'
 import { forwardRef, PropsWithChildren, useCallback, useState } from 'react'
 import cx from 'classnames'
 import { ResultPanel } from '../result-panel'
@@ -29,9 +30,10 @@ const CenterContent = forwardRef<HTMLDivElement>((_, ref) => {
         onClick={handleClickIcon}
         className="flex justify-center items-center"
       >
-        <div className="cursor-pointer bg-black text-2xl hover:text-gray-700 transition-colors">
-          <Logo />
-        </div>
+        <Avatar
+          className="cursor-pointer bg-black text-2xl hover:text-gray-700 transition-colors"
+          icon={<Logo />}
+        />
       </div>
     )
   }
@@ -54,17 +56,14 @@ const InputPanel: React.FC<{
     <>
       <div className="bg-zinc-100 transition-all duration-300 relative w-80 border border-gray-300">
         {/* Textarea Input */}
-        <textarea
-          className="pl-8 pr-12 py-2 text-sm border-none focus:ring-0 bg-transparent resize-none w-full"
-          onKeyPress={(e) => {
-            if (e.key === 'Enter') {
-              e.preventDefault()
-              onChange(value)
-              goToResult()
-            }
+        <Input.TextArea
+          className="pl-8 pr-12 py-2 text-sm border-none focus:ring-0 bg-transparent"
+          onPressEnter={() => {
+            onChange(value)
+            goToResult()
           }}
           autoFocus
-          rows={1}
+          autoSize={{ minRows: 1, maxRows: 4 }}
           placeholder="Yêu cầu AI..."
           value={value}
           onChange={(e) => setValue(e.target.value)}
@@ -91,12 +90,11 @@ const InputPanel: React.FC<{
         </SendToWritelyTip>
 
         {/* Nút kéo thả */}
-        <button
-          type="button"
+        <Button
+          type="text"
           className="absolute left-[4px] top-[4px] text-lg handle flex items-center justify-center w-6 h-6 p-0 bg-transparent"
-        >
-          <DragTip />
-        </button>
+          icon={<DragTip />}
+        />
       </div>
 
       {/* Quick Prompt Suggestions */}
@@ -114,16 +112,25 @@ const InputPanel: React.FC<{
 }
 
 const SendToWritelyTip: React.FC<PropsWithChildren> = ({ children }) => {
-  return <div data-tooltip={i18next.t('Send to writely')}>{children}</div>
+  return (
+    <Tooltip
+      title={
+        <div className="flex items-center gap-1">
+          {i18next.t('Send to writely')} <IcOutlineKeyboardReturn />
+        </div>
+      }
+    >
+      {children}
+    </Tooltip>
+  )
 }
 
 const DragTip: React.FC<PropsWithChildren> = () => {
   return (
-    <div
-      data-tooltip={i18next.t('Drag')}
-      className="flex items-center justify-center w-full h-full"
-    >
-      <DashiconsMove className="text-gray-500 hover:text-gray-700" />
-    </div>
+    <Tooltip title={<div>{i18next.t('Drag')}</div>}>
+      <div className="flex items-center justify-center w-full h-full">
+        <DashiconsMove className="text-gray-500 hover:text-gray-700" />
+      </div>
+    </Tooltip>
   )
 }

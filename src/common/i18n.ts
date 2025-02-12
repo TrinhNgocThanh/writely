@@ -17,7 +17,7 @@ export const initI18n = async () => {
         translation: viJSON,
       },
     },
-    fallbackLng: 'vi-VN',
-    lng: settings.lang || 'vi-VN',
+    fallbackLng: 'en-US',
+    lng: settings.lang || '',
   })
 }

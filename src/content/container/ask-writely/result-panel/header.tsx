@@ -1,9 +1,7 @@
-import { Switch, Tooltip } from 'antd'
 import {
   MdiClose,
   MaterialSymbolsKeyboardBackspace,
   DashiconsAdminGeneric,
-  RiHeartFill,
 } from '@/components/icon'
 import { MutableRefObject, ReactNode } from 'react'
 import { useView } from '../../store/view'
@@ -27,42 +25,34 @@ export const Header: React.FC<{ abortRef: MutableRefObject<() => void> }> = ({
   return (
     <div className="flex px-2 items-center bg-zinc-900 cursor-move handle justify-between">
       <div className="flex items-center">
-        <Operation
-          icon={<MaterialSymbolsKeyboardBackspace />}
-          tooltip={i18next.t('Back')}
-          onClick={back}
-        />
-        <Operation
-          icon={<MdiClose />}
-          tooltip={i18next.t('Close window')}
-          onClick={hide}
-        />
+        <Operation icon={<MaterialSymbolsKeyboardBackspace />} onClick={back} />
+        <Operation icon={<MdiClose />} onClick={hide} />
       </div>
       <div className="flex items-center">
         <Operation
           icon={
-            <Switch
-              size="small"
-              title={i18next.t('Text')}
-              checked={!!isOriginText}
-              onChange={(e) => setIsOriginText(e)}
-              className={isOriginText ? '!bg-amber-800' : '!bg-gray-400'}
-            />
+            <label className="flex items-center cursor-pointer">
+              <input
+                type="checkbox"
+                checked={!!isOriginText}
+                onChange={(e) => setIsOriginText(e.target.checked)}
+                className="hidden"
+              />
+              <span
+                className={`w-10 h-6 flex items-center bg-gray-400 rounded-full p-1 duration-300 ease-in-out ${
+                  isOriginText ? 'bg-amber-800' : 'bg-gray-400'
+                }`}
+              >
+                <span
+                  className={`bg-white w-4 h-4 rounded-full shadow-md transform duration-300 ease-in-out ${
+                    isOriginText ? 'translate-x-4' : ''
+                  }`}
+                ></span>
+              </span>
+              <span className="ml-2 text-white">{i18next.t('Text')}</span>
+            </label>
           }
-          tooltip={i18next.t('Display original text')}
-        ></Operation>
-        {/* <Operation
-          icon={
-            <a
-              className="h-4"
-              href="https://github.com/anc95/writely"
-              target="_blank"
-            >
-              <RiHeartFill className="text-orange-600" />
-            </a>
-          }
-          tooltip={i18next.t('Star')}
-        /> */}
+        />
         <Operation
           onClick={() => {
             browser.runtime.sendMessage({
@@ -70,7 +60,6 @@ export const Header: React.FC<{ abortRef: MutableRefObject<() => void> }> = ({
             })
           }}
           icon={<DashiconsAdminGeneric />}
-          tooltip={i18next.t('Jump to settings')}
         />
       </div>
     </div>
@@ -79,17 +68,14 @@ export const Header: React.FC<{ abortRef: MutableRefObject<() => void> }> = ({
 
 const Operation: React.FC<{
   icon: ReactNode
-  tooltip: string
   onClick?: () => void
-}> = ({ icon, tooltip, onClick }) => {
+}> = ({ icon, onClick }) => {
   return (
-    <Tooltip title={tooltip}>
-      <div
-        onClick={() => onClick?.()}
-        className="text-white p-3 text-base flex items-center justify-center cursor-pointer hover:bg-zinc-700 transition-all duration-700"
-      >
-        {icon}
-      </div>
-    </Tooltip>
+    <div
+      onClick={() => onClick?.()}
+      className="text-white p-3 text-base flex items-center justify-center cursor-pointer hover:bg-zinc-700 transition-all duration-700"
+    >
+      {icon}
+    </div>
   )
 }
