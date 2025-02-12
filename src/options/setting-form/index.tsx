@@ -49,14 +49,14 @@ export const SettingsForm: React.FC = () => {
           <div className="flex items-baseline text-xl gap-4">
             <Tooltip title="API Hub">
               <a href="https://api.mylinks.com.vn">
-                <div className="p-2 rounded-sm hover:rounded-md bg-gray-50 hover:bg-gray-200 transition-all duration-300 cursor-pointer">
+                <div className="p-2 rounded-sm hover:rounded-sm bg-gray-50 hover:bg-gray-200 transition-all duration-300 cursor-pointer">
                   <LogosGithubIcon />
                 </div>
               </a>
             </Tooltip>
             <Tooltip title="Feedback">
               <a href="https://www.mylinks.com.vn">
-                <div className="p-2 rounded-sm hover:rounded-md bg-gray-50 hover:bg-gray-200 transition-all duration-300 cursor-pointer">
+                <div className="p-2 rounded-sm hover:rounded-sm bg-gray-50 hover:bg-gray-200 transition-all duration-300 cursor-pointer">
                   <CodiconFeedback />
                 </div>
               </a>

@@ -1,19 +1,14 @@
-import { Avatar, Button, Input, Tag, Tooltip } from 'antd'
-import {
-  forwardRef,
-  PropsWithChildren,
-  useCallback,
-  useMemo,
-  useState,
-} from 'react'
+import { Avatar, Button, Input, Tooltip } from 'antd'
+import { forwardRef, PropsWithChildren, useCallback, useState } from 'react'
 import cx from 'classnames'
 import { ResultPanel } from '../result-panel'
 import { PromptCenter } from '../prompts'
 import { IcBaselineSend, Logo } from '@/components/icon'
+import { DashiconsMove } from '@/components/icon/drag'
+
 import i18next from 'i18next'
 import { IcOutlineKeyboardReturn } from '@/components/icon/return'
 import { useView } from '../../store/view'
-import { DashiconsMove } from '@/components/icon/drag'
 import { QuickPrompt } from './quick-prompt'
 import { useInstruction } from '../../store/instruction'
 
@@ -31,9 +26,12 @@ const CenterContent = forwardRef<HTMLDivElement>((_, ref) => {
 
   if (viewStatus === 'icon') {
     return (
-      <div onClick={handleClickIcon}>
+      <div
+        onClick={handleClickIcon}
+        className="flex justify-center items-center"
+      >
         <Avatar
-          className="cursor-pointer !opacity-90 hover:!opacity-100 !shadow-sm hover:!shadow-md !bg-black !text-2xl hover:!text-3xl !transition-all !duration-700 !flex !items-center !justify-center"
+          className="cursor-pointer bg-black text-2xl hover:text-gray-700 transition-colors"
           icon={<Logo />}
         />
       </div>
@@ -56,13 +54,10 @@ const InputPanel: React.FC<{
 
   return (
     <>
-      <div
-        className={cx(
-          'bg-zinc-100 transition-all duration-500 relative w-80 shadow-md block'
-        )}
-      >
+      <div className="bg-zinc-100 transition-all duration-300 relative w-80 border border-gray-300">
+        {/* Textarea Input */}
         <Input.TextArea
-          className="!pl-8 animate-breathe"
+          className="pl-8 pr-12 py-2 text-sm border-none focus:ring-0 bg-transparent"
           onPressEnter={() => {
             onChange(value)
             goToResult()
@@ -73,46 +68,44 @@ const InputPanel: React.FC<{
           value={value}
           onChange={(e) => setValue(e.target.value)}
         />
-        <div>
-          <SendToWritelyTip>
-            <div
-              className="absolute right-2 bottom-[3px]"
-              onClick={() => {
-                onChange(value)
-                goToResult()
-              }}
-            >
-              <IcBaselineSend
-                className={cx(
-                  'w-4 h-4 text-gray-300',
-                  !!value?.trim()?.length
-                    ? 'text-zinc-900 cursor-pointer'
-                    : 'text-zinc-300'
-                )}
-              />
-            </div>
-          </SendToWritelyTip>
-        </div>
-        <Button
-          type="ghost"
-          className="!absolute left-[3px] top-[3px] text-lg handle animate__animated animate__fadeInDown"
-          icon={<DragTip />}
-        ></Button>
-      </div>
-      <div
-        className={cx(
-          'w-80 bg-zinc-100 duration-500 transition-shadow block shadow-md overflow-auto max-h-52'
-        )}
-      >
-        <div>
-          <QuickPrompt
-            filter={value}
-            onClick={(instruction: string) => {
+
+        {/* Gửi yêu cầu */}
+        <SendToWritelyTip>
+          <div
+            className="absolute right-2 bottom-[6px] cursor-pointer"
+            onClick={() => {
+              onChange(value)
               goToResult()
-              onChange(instruction)
             }}
-          />
-        </div>
+          >
+            <IcBaselineSend
+              className={cx(
+                'w-5 h-5 text-gray-500',
+                value?.trim()?.length
+                  ? 'text-blue-600 hover:text-blue-700'
+                  : 'text-gray-300'
+              )}
+            />
+          </div>
+        </SendToWritelyTip>
+
+        {/* Nút kéo thả */}
+        <Button
+          type="text"
+          className="absolute left-[4px] top-[4px] text-lg handle flex items-center justify-center w-6 h-6 p-0 bg-transparent"
+          icon={<DragTip />}
+        />
+      </div>
+
+      {/* Quick Prompt Suggestions */}
+      <div className="w-80 bg-zinc-100 border border-gray-300 overflow-auto max-h-52 mt-2">
+        <QuickPrompt
+          filter={value}
+          onClick={(instruction: string) => {
+            goToResult()
+            onChange(instruction)
+          }}
+        />
       </div>
     </>
   )
@@ -122,7 +115,7 @@ const SendToWritelyTip: React.FC<PropsWithChildren> = ({ children }) => {
   return (
     <Tooltip
       title={
-        <div>
+        <div className="flex items-center gap-1">
           {i18next.t('Send to writely')} <IcOutlineKeyboardReturn />
         </div>
       }
@@ -135,8 +128,8 @@ const SendToWritelyTip: React.FC<PropsWithChildren> = ({ children }) => {
 const DragTip: React.FC<PropsWithChildren> = () => {
   return (
     <Tooltip title={<div>{i18next.t('Drag')}</div>}>
-      <div>
-        <DashiconsMove />
+      <div className="flex items-center justify-center w-full h-full">
+        <DashiconsMove className="text-gray-500 hover:text-gray-700" />
       </div>
     </Tooltip>
   )

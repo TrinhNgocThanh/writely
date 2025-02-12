@@ -17,7 +17,7 @@ export const Emoji: React.FC<{
 
   return (
     <Popover content={<EmojiPicker onEmojiClick={(e) => setValue(e.emoji)} />}>
-      <div className="w-10 h-10 flex items-center justify-center text-xl rounded-md bg-slate-200 cursor-pointer">
+      <div className="w-10 h-10 flex items-center justify-center text-xl rounded-sm bg-slate-200 cursor-pointer">
         {value}
       </div>
     </Popover>

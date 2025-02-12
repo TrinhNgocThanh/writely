@@ -155,7 +155,7 @@ const ModelCard: React.FC<
   const content = (
     <div
       className={cx(
-        'border border-gray-100 hover:rounded-lg rounded-md hover:shadow-sm transition-all duration-300 p-3  bg-zinc-100 flex flex-col gap-2',
+        'border border-gray-100 hover:rounded-lg rounded-sm hover:shadow-sm transition-all duration-300 p-3  bg-zinc-100 flex flex-col gap-2',
         m === model ? '!border-black' : ''
       )}
     >
@@ -188,7 +188,7 @@ const FormModelSelect: React.FC<{
       <div className="flex items-center gap-2 py-2">
         {models.map((m) => (
           <div
-            className="px-1 bg-orange-300 hover:bg-orange-400 cursor-pointer text-white rounded-md text-xs"
+            className="px-1 bg-orange-300 hover:bg-orange-400 cursor-pointer text-white rounded-sm text-xs"
             onClick={() => {
               onChange?.(m)
             }}
