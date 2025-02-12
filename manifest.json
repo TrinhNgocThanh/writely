@@ -1,11 +1,11 @@
 {
-  "name": "Writely",
+  "name": "Trợ lý nội dung AI",
   "version": "1.0.0",
   "description": "A GPT Powered Extension helping your writing and reading",
   "manifest_version": 3,
-  "author": "https://github.com/anc95",
+  "author": "https://github.com",
   "action": {
-    "default_title": "Writely",
+    "default_title": "Trợ lý nội dung AI",
     "default_popup": "dist/popup/index.html",
     "defult_icon": "dist/assets/icon.png"
   },

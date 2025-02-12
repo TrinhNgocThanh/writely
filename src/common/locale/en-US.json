@@ -6,6 +6,7 @@
   "Translate to": "Translate to",
   "English": "English",
   "Chinese": "Chinese",
+  "Vietnamese": "Vietnamese",
   "Append": "Append",
   "Replace": "Replace",
   "Prompt template": "{{task}}:\n {{content}}",

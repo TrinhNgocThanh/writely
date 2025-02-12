@@ -47,7 +47,7 @@ export const Header: React.FC<{ abortRef: MutableRefObject<() => void> }> = ({
           }
           tooltip={i18next.t('Display original text')}
         ></Operation>
-        <Operation
+        {/* <Operation
           icon={
             <a
               className="h-4"
@@ -58,7 +58,7 @@ export const Header: React.FC<{ abortRef: MutableRefObject<() => void> }> = ({
             </a>
           }
           tooltip={i18next.t('Star')}
-        />
+        /> */}
         <Operation
           onClick={() => {
             browser.runtime.sendMessage({

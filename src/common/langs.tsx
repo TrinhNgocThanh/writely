@@ -4,7 +4,7 @@ export const langs = [
     value: 'en-US',
   },
   {
-    label: '中文',
-    value: 'zh-CN',
+    label: 'Tiếng Việt',
+    value: 'vi-VN',
   },
-];
+]

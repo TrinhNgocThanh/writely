@@ -3,18 +3,26 @@ import './index.css'
 import browser from 'webextension-polyfill'
 
 export const App: React.FC = () => {
+  const openSettings = () => {
+    const url = browser.runtime.getURL('dist/options/index.html')
+    window.open(url)
+  }
+
   return (
-    <div className="rounded-lg overflow-hidden w-96 bg-white pb-4">
-      <div className="text-2xl font-semibold from-neutral-900 flex items-baseline justify-between pt-4 border-gray-200 border-b px-3">
-        <div className="animate-bounce">Writely</div>
-        <div
-          className="text-xl cursor-pointer hover:bg-slate-300 p-1"
-          onClick={() => {
-            const url = browser.runtime.getURL('dist/options/index.html')
-            window.open(url)
-          }}
-        >
-          <DashiconsAdminGeneric />
+    <div className="w-64 bg-transparent">
+      {/* Hộp chứa nội dung */}
+      <div className="bg-white border border-gray-300 rounded-md shadow-lg overflow-hidden pb-2">
+        {/* Header */}
+        <div className="flex items-center justify-between px-3 py-2 border-b border-gray-200">
+          <div className="text-sm font-semibold text-blue-600 tracking-wide drop-shadow-sm animate-bounce">
+            ✨ Trợ lý nội dung AI...
+          </div>
+          <button
+            className="p-1.5 rounded-md hover:bg-gray-300 transition-all shadow-sm"
+            onClick={openSettings}
+          >
+            <DashiconsAdminGeneric className="text-lg text-gray-700" />
+          </button>
         </div>
       </div>
     </div>

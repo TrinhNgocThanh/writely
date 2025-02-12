@@ -47,15 +47,15 @@ export const SettingsForm: React.FC = () => {
         <div className="font-semibold text-3xl">{i18next.t('Settings')}</div>
         <div>
           <div className="flex items-baseline text-xl gap-4">
-            <Tooltip title="Github">
-              <a href="https://github.com/anc95/writely">
+            <Tooltip title="API Hub">
+              <a href="https://api.mylinks.com.vn">
                 <div className="p-2 rounded-sm hover:rounded-md bg-gray-50 hover:bg-gray-200 transition-all duration-300 cursor-pointer">
                   <LogosGithubIcon />
                 </div>
               </a>
             </Tooltip>
             <Tooltip title="Feedback">
-              <a href="https://github.com/anc95/writely/issues">
+              <a href="https://www.mylinks.com.vn">
                 <div className="p-2 rounded-sm hover:rounded-md bg-gray-50 hover:bg-gray-200 transition-all duration-300 cursor-pointer">
                   <CodiconFeedback />
                 </div>

@@ -5,7 +5,7 @@
   "manifest_version": 3,
   "author": "https://github.com/anc95",
   "action": {
-    "default_title": "Writely",
+    "default_title": "Trợ lý nội dung",
     "default_popup": "dist/popup/index.html"
   },
   "options_ui": {

@@ -36,7 +36,7 @@ const useColumns = () => {
     {
       title: i18next.t('Name'),
       dataIndex: 'name',
-      width: 200,
+      width: 120,
       render: (value) => {
         return (
           <Paragraph className="w-48" ellipsis>
@@ -61,7 +61,7 @@ const useColumns = () => {
       },
     },
     {
-      title: i18next.t('Actions'),
+      title: i18next.t('/'),
       render: (_, record) => {
         return (
           <div className="flex gap-1">
