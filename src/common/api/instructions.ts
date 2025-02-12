@@ -5,70 +5,73 @@ import { getSetting, saveSetting } from '../store/settings'
 export const addOne = async (instruction: Instruction) => {
   const settings = await getSetting()
 
-  const newInstruction = {
+  settings.customInstructions.push({
     id: uniqueId(Date.now() + ''),
     ...instruction,
-  }
+  })
 
-  settings.customInstructions.push(newInstruction)
   await saveSetting(settings)
-
-  return newInstruction // ✅ Trả về object mới thay vì undefined
 }
 
 export const update = async (instruction: Instruction) => {
   const settings = await getSetting()
 
-  settings.customInstructions = settings.customInstructions.map((item) =>
-    item.id === instruction.id ? instruction : item
-  )
+  settings.customInstructions = settings.customInstructions.map((item) => {
+    if (item.id === instruction.id) {
+      return instruction
+    }
+
+    return item
+  })
 
   await saveSetting(settings)
-  return true // ✅ Trả về true khi hoàn thành
 }
 
 export const remove = async (id: string) => {
   const settings = await getSetting()
 
-  settings.customInstructions = settings.customInstructions.filter(
-    (item) => item.id !== id
-  )
+  settings.customInstructions = settings.customInstructions.filter((item) => {
+    return item.id !== id
+  })
 
   await saveSetting(settings)
-  return true // ✅ Trả về true khi xóa thành công
 }
 
 export const setTopPinned = async (id: string) => {
   const settings = await getSetting()
-  const pinnedInstruction = settings.customInstructions.find(
-    (item) => item.id === id
-  )
+  let pinnedInsturction = null
 
-  if (!pinnedInstruction) return false // ✅ Kiểm tra nếu không tìm thấy
+  settings.customInstructions = settings.customInstructions.filter((item) => {
+    if (item.id === id) {
+      pinnedInsturction = item
+    }
 
-  settings.customInstructions = [
-    pinnedInstruction,
-    ...settings.customInstructions.filter((item) => item.id !== id),
-  ]
+    return item.id !== id
+  })
 
-  await saveSetting(settings)
-  return true
+  if (pinnedInsturction) {
+    settings.customInstructions = [
+      pinnedInsturction,
+      ...settings.customInstructions,
+    ]
+
+    await saveSetting(settings)
+  }
 }
 
 export const batchAdd = async (instructions: Instruction[]) => {
   const settings = await getSetting()
 
-  const validInstructions = instructions
-    .filter((i) => i.name && i.instruction)
-    .map((i) => ({
-      id: uniqueId(Date.now() + ''),
-      name: i.name,
-      instruction: i.instruction,
-      icon: i.icon,
-    }))
+  settings.customInstructions.push(
+    ...instructions
+      .map((i) => ({
+        id: uniqueId(Date.now() + ''),
+        name: i.name,
+        instruction: i.instruction,
+        icon: i.icon,
+      }))
+      .filter((i) => i.name && i.instruction)
+  )
 
-  settings.customInstructions.push(...validInstructions)
   await saveSetting(settings)
-
-  return validInstructions.length // ✅ Trả về số lượng đã thêm
 }

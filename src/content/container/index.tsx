@@ -1,4 +1,6 @@
+import { ConfigProvider } from 'antd'
 import { useEffect } from 'react'
+import { theme } from '../../common/antd-theme'
 import { AskWritely, getFixedDom } from './ask-writely'
 import { SelectionManagerProvider } from './store/selection'
 import 'highlight.js/styles/github.css'
@@ -7,7 +9,11 @@ import { InstructionProvider } from './store/instruction'
 
 export const Menu: React.FC = () => {
   return (
-    <div className="relative">
+    <ConfigProvider
+      theme={theme}
+      getPopupContainer={() => getFixedDom()}
+      getTargetContainer={() => getFixedDom()}
+    >
       <SelectionManagerProvider>
         <InstructionProvider>
           <ViewProvider>
@@ -15,6 +21,6 @@ export const Menu: React.FC = () => {
           </ViewProvider>
         </InstructionProvider>
       </SelectionManagerProvider>
-    </div>
+    </ConfigProvider>
   )
 }
