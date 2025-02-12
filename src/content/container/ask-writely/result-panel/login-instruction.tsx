@@ -1,5 +1,4 @@
 import { openOptionPage } from '@/common/browser'
-import Link from 'antd/es/typography/Link'
 import i18next from 'i18next'
 
 export const LoginInstruction: React.FC<{
@@ -13,7 +12,9 @@ export const LoginInstruction: React.FC<{
           .replace('Writely', accountType || 'Writely')}
         , {i18next.t('please Go to')}{' '}
       </span>
-      <Link onClick={openOptionPage}>{i18next.t('Extension Settings')}</Link>
+      <button onClick={openOptionPage} className="text-blue-500 underline">
+        {i18next.t('Extension Settings')}
+      </button>
       <span> {i18next.t('to connect')}</span>
     </div>
   )

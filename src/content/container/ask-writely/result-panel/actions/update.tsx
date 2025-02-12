@@ -18,8 +18,8 @@ export const Insert: React.FC<{
 
   return (
     <BaseAction
-      tooltip={i18next.t('Insert content')}
-      successTooltip={i18next.t('Inserted')}
+      // tooltip={i18next.t('Insert content')}
+      // successTooltip={i18next.t('Inserted')}
       onClick={handleClick}
     >
       <IcOutlineCheck />
