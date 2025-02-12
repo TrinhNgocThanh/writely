@@ -7,7 +7,7 @@ import { useCallback, useState } from 'react'
 export const Import: React.FC = () => {
   const { refresh } = useSettings()
   const [loading, setLoading] = useState(false)
-  const [showPopover, setShowPopover] = useState(false)
+  const [popoverVisible, setPopoverVisible] = useState(false)
 
   const handleUploadChange = useCallback(
     debounce(
@@ -31,18 +31,25 @@ export const Import: React.FC = () => {
     []
   )
 
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]
+    if (file) {
+      handleUploadChange(file)
+    }
+  }
+
   return (
     <div className="relative inline-block">
       <button
         className="bg-blue-500 text-white py-2 px-4 rounded"
-        onMouseEnter={() => setShowPopover(true)}
-        onMouseLeave={() => setShowPopover(false)}
+        onMouseEnter={() => setPopoverVisible(true)}
+        onMouseLeave={() => setPopoverVisible(false)}
         disabled={loading}
       >
         {loading ? i18next.t('Loading...') : i18next.t('Import')}
       </button>
-      {showPopover && (
-        <div className="absolute left-0 mt-2 w-48 bg-white border border-gray-300 p-2 rounded shadow-lg">
+      {popoverVisible && (
+        <div className="absolute left-0 mt-2 w-48 p-2 bg-white border border-gray-300 rounded shadow-lg">
           {i18next.t('Import instructions')}
         </div>
       )}
@@ -50,12 +57,12 @@ export const Import: React.FC = () => {
         type="file"
         accept=".json"
         className="hidden"
-        onChange={(e) => {
-          if (e.target.files && e.target.files[0]) {
-            handleUploadChange(e.target.files[0])
-          }
-        }}
+        onChange={handleFileChange}
+        id="file-upload"
       />
+      <label htmlFor="file-upload" className="cursor-pointer">
+        <span className="sr-only">Upload file</span>
+      </label>
     </div>
   )
 }

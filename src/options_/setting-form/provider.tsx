@@ -35,11 +35,9 @@ export const ProviderSetting: React.FC = () => {
             <div
               className={classNames(
                 'flex gap-2 justify-center items-center py-3 px-5 rounded-full',
-                isCheckedWritely ? activeClassNames : ''
+                isCheckedWritely ? activeClassNames : '',
+                isCheckedWritely ? 'shadow-md' : ''
               )}
-              style={{
-                boxShadow: isCheckedWritely ? '0px 3px rgb(252,211,77)' : '',
-              }}
             >
               <IconWritely className="h-11" />
               <span className="font-semibold text-3xl">Writely</span>
@@ -57,11 +55,9 @@ export const ProviderSetting: React.FC = () => {
             <div
               className={classNames(
                 'items-center py-3 px-5 rounded-full',
-                isCheckedOpenAI ? activeClassNames : ''
+                isCheckedOpenAI ? activeClassNames : '',
+                isCheckedOpenAI ? 'shadow-md' : ''
               )}
-              style={{
-                boxShadow: isCheckedOpenAI ? '0px 3px rgb(252,211,77)' : '',
-              }}
             >
               <OpenAILogo className="h-11 w-auto" />
             </div>
@@ -78,11 +74,9 @@ export const ProviderSetting: React.FC = () => {
             <div
               className={classNames(
                 'items-center py-3 px-5 rounded-full flex gap-2',
-                isCheckedChatGPT ? activeClassNames : ''
+                isCheckedChatGPT ? activeClassNames : '',
+                isCheckedChatGPT ? 'shadow-md' : ''
               )}
-              style={{
-                boxShadow: isCheckedChatGPT ? '0px 3px rgb(252,211,77)' : '',
-              }}
             >
               <ChatGPTIcon className="h-11 w-auto" />
               <span className="font-semibold text-3xl">ChatGPT</span>
@@ -103,7 +97,9 @@ const LinkToWritelySite: React.FC = () => {
   return (
     <div className="flex py-4 border-t border-gray-300 text-xl gap-3 items-center justify-center">
       {isLoading ? (
-        <div className="spinner" />
+        <div className="flex items-center justify-center">
+          <div className="loader"></div>
+        </div>
       ) : email ? (
         <div className="flex gap-1 items-center">
           <a
@@ -145,7 +141,9 @@ const LinkToChatgptWeb: React.FC = () => {
   return (
     <div className="flex py-4 border-t border-gray-300 text-xl gap-3 items-center justify-center">
       {isLoading ? (
-        <div className="spinner" />
+        <div className="flex items-center justify-center">
+          <div className="loader"></div>
+        </div>
       ) : name ? (
         <div className="flex gap-1 items-center">
           <a

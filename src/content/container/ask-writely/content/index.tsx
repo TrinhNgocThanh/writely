@@ -1,4 +1,3 @@
-import { Avatar, Button, Input } from 'antd'
 import { forwardRef, PropsWithChildren, useCallback, useState } from 'react'
 import cx from 'classnames'
 import { ResultPanel } from '../result-panel'
@@ -30,10 +29,9 @@ const CenterContent = forwardRef<HTMLDivElement>((_, ref) => {
         onClick={handleClickIcon}
         className="flex justify-center items-center"
       >
-        <Avatar
-          className="cursor-pointer bg-black text-2xl hover:text-gray-700 transition-colors"
-          icon={<Logo />}
-        />
+        <div className="cursor-pointer bg-black text-2xl hover:text-gray-700 transition-colors">
+          <Logo />
+        </div>
       </div>
     )
   }
@@ -56,14 +54,17 @@ const InputPanel: React.FC<{
     <>
       <div className="bg-zinc-100 transition-all duration-300 relative w-80 border border-gray-300">
         {/* Textarea Input */}
-        <Input.TextArea
-          className="pl-8 pr-12 py-2 text-sm border-none focus:ring-0 bg-transparent"
-          onPressEnter={() => {
-            onChange(value)
-            goToResult()
+        <textarea
+          className="pl-8 pr-12 py-2 text-sm border-none focus:ring-0 bg-transparent resize-none w-full"
+          onKeyPress={(e) => {
+            if (e.key === 'Enter') {
+              e.preventDefault()
+              onChange(value)
+              goToResult()
+            }
           }}
           autoFocus
-          autoSize={{ minRows: 1, maxRows: 4 }}
+          rows={1}
           placeholder="Yêu cầu AI..."
           value={value}
           onChange={(e) => setValue(e.target.value)}
@@ -90,11 +91,12 @@ const InputPanel: React.FC<{
         </SendToWritelyTip>
 
         {/* Nút kéo thả */}
-        <Button
-          type="text"
+        <button
+          type="button"
           className="absolute left-[4px] top-[4px] text-lg handle flex items-center justify-center w-6 h-6 p-0 bg-transparent"
-          icon={<DragTip />}
-        />
+        >
+          <DragTip />
+        </button>
       </div>
 
       {/* Quick Prompt Suggestions */}

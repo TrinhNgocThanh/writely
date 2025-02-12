@@ -1,0 +1,4 @@
+Convert all Ant Design (antd) components to pure ReactJS with Tailwind CSS.  
+Ensure all components maintain the same functionality and styling.  
+Use Tailwind's utility classes effectively without extra wrapper elements.  
+Optimize for performance and readability, removing unnecessary dependencies.  

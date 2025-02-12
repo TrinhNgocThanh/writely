@@ -1,5 +1,11 @@
 import { IcOutlineModeEdit } from '@/components/icon'
-import { MutableRefObject, useCallback, useEffect, useRef } from 'react'
+import {
+  MutableRefObject,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react'
 import mdit from 'markdown-it'
 import hljsPlugin from 'markdown-it-highlightjs'
 import { Actions } from './actions'
@@ -7,7 +13,6 @@ import { Copy } from './actions/copy'
 import { Replay } from './actions/replay'
 import cx from 'classnames'
 import { useSelectionManager } from '../../store/selection'
-import { Alert, Tooltip, message } from 'antd'
 import { useOpenAIEditPrompt } from '@/common/api/openai'
 import { useResultPanel } from '../../store/result-panel'
 import { Insert } from './actions/update'
@@ -27,7 +32,7 @@ export const Content: React.FC<{
   text: string
   abortRef: MutableRefObject<() => void>
 }> = ({ text: task, abortRef }) => {
-  const mdContainerRef = useRef<HTMLDivElement>()
+  const mdContainerRef = useRef<HTMLDivElement>(null)
   const selectionManager = useSelectionManager()
   const queryOpenAIPrompt = useOpenAIEditPrompt()
   const {
@@ -46,7 +51,7 @@ export const Content: React.FC<{
 
   const handleQuery = useCallback(async () => {
     if (!selectionManager.text) {
-      return message.warning('No selection')
+      return alert('No selection')
     }
 
     sequenceRef.current += 1
@@ -75,7 +80,6 @@ export const Content: React.FC<{
 
     try {
       abortRef.current = queryOpenAIPrompt(selectionManager.text, task, handler)
-      // queryOpenAIEdit(selectionManager.text, text, handler);
     } catch (e) {
       setResult(e.toString())
       setLoading(false)
@@ -157,7 +161,7 @@ export const Content: React.FC<{
 const StopGenerate: React.FC<{ onClick?: () => void }> = ({ onClick }) => {
   return (
     <div className="w-fit rounded-3xl bg-slate-100">
-      <Tooltip title={i18next.t('##Stop Generate')} trigger="hover">
+      <div className="tooltip" data-tooltip={i18next.t('##Stop Generate')}>
         <IconBtn
           color="red"
           className="animate-breathe-heavy"
@@ -165,25 +169,25 @@ const StopGenerate: React.FC<{ onClick?: () => void }> = ({ onClick }) => {
         >
           <MaterialSymbolsStopCircleOutline className="text-2xl" />
         </IconBtn>
-      </Tooltip>
+      </div>
     </div>
   )
 }
 
 const AutoScroll: React.FC = () => {
-  const divRef = useRef<HTMLDivElement>()
+  const divRef = useRef<HTMLDivElement>(null)
 
   useVisibleEffect(divRef)
 
   return <div className="w-1 h-1" ref={divRef}></div>
 }
 
-const useVisibleEffect = (ref: MutableRefObject<HTMLDivElement>) => {
+const useVisibleEffect = (ref: MutableRefObject<HTMLDivElement | null>) => {
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.intersectionRatio !== 1) {
-          ref.current.scrollIntoView({
+          ref.current?.scrollIntoView({
             behavior: 'smooth',
           })
         }
@@ -198,4 +202,20 @@ const useVisibleEffect = (ref: MutableRefObject<HTMLDivElement>) => {
 
     return () => observer.disconnect()
   }, [])
+}
+
+const Alert: React.FC<{ description: React.ReactNode; type: 'error' }> = ({
+  description,
+  type,
+}) => {
+  return (
+    <div
+      className={`p-4 mb-4 text-sm rounded-lg ${
+        type === 'error' ? 'text-red-700 bg-red-100' : ''
+      }`}
+      role="alert"
+    >
+      {description}
+    </div>
+  )
 }

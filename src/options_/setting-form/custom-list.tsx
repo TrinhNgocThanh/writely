@@ -41,23 +41,23 @@ export const CustomList: React.FC<{
         />
         <button
           className={`p-2 rounded ${
-            inputValue.trim()
-              ? 'bg-green-500 text-white'
-              : 'bg-gray-300 text-gray-500'
+            inputValue.trim() ? 'bg-green-500' : 'bg-gray-300'
           }`}
           disabled={!inputValue.trim()}
           onClick={handleAddItem}
         >
           <svg
+            className="w-6 h-6 text-white"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
             xmlns="http://www.w3.org/2000/svg"
-            className="h-5 w-5"
-            viewBox="0 0 20 20"
-            fill="currentColor"
           >
             <path
-              fillRule="evenodd"
-              d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-10.707a1 1 0 00-1.414-1.414L9 9.586 7.707 8.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-              clipRule="evenodd"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M5 13l4 4L19 7"
             />
           </svg>
         </button>
@@ -67,19 +67,21 @@ export const CustomList: React.FC<{
           <div key={item} className="flex gap-2 items-center">
             <div>{item}</div>
             <button
-              className="p-2 rounded bg-red-500 text-white"
+              className="p-2 rounded bg-red-500"
               onClick={() => handleRemoveItem(item)}
             >
               <svg
+                className="w-6 h-6 text-white"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
                 xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
-                viewBox="0 0 20 20"
-                fill="currentColor"
               >
                 <path
-                  fillRule="evenodd"
-                  d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-10.707a1 1 0 00-1.414-1.414L9 9.586 7.707 8.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                  clipRule="evenodd"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M6 18L18 6M6 6l12 12"
                 />
               </svg>
             </button>

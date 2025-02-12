@@ -1,4 +1,3 @@
-import { Button, Form, Tooltip } from 'antd'
 import { useCallback, useEffect, useState } from 'react'
 import { useSWRConfig } from 'swr'
 import { Settings } from '../types'
@@ -7,28 +6,29 @@ import { OPENAISettings } from './open-api'
 import { SystemSetting } from './system'
 import { LogosGithubIcon } from '@/components/icon/github'
 import { CodiconFeedback } from '@/components/icon/feedback'
-import { useForm } from 'antd/es/form/Form'
 import i18next from 'i18next'
 import { ProviderSetting } from './provider'
-//anjinsan
+
 export const SettingsForm: React.FC = () => {
   const { loading, settings, setSettings } = useSettings()
   const { mutate } = useSWRConfig()
-  const [form] = useForm()
+  const [formValues, setFormValues] = useState<Settings>(settings)
 
   const handleFormChange = useCallback(
-    async (changedValue: Settings) => {
-      await setSettings(changedValue)
+    async (changedValue: Partial<Settings>) => {
+      const newSettings = { ...formValues, ...changedValue }
+      setFormValues(newSettings)
+      await setSettings(newSettings)
 
       if (changedValue.lang) {
         location.reload()
       }
     },
-    [setSettings]
+    [formValues, setSettings]
   )
 
   useEffect(() => {
-    form.setFieldsValue(settings)
+    setFormValues(settings)
   }, [settings])
 
   useEffect(() => {
@@ -47,35 +47,26 @@ export const SettingsForm: React.FC = () => {
         <div className="font-semibold text-3xl">{i18next.t('Settings')}</div>
         <div>
           <div className="flex items-baseline text-xl gap-4">
-            <Tooltip title="API Hub">
-              <a href="https://api.mylinks.com.vn">
-                <div className="p-2 rounded-sm hover:rounded-sm bg-gray-50 hover:bg-gray-200 transition-all duration-300 cursor-pointer">
-                  <LogosGithubIcon />
-                </div>
-              </a>
-            </Tooltip>
-            <Tooltip title="Feedback">
-              <a href="https://www.mylinks.com.vn">
-                <div className="p-2 rounded-sm hover:rounded-sm bg-gray-50 hover:bg-gray-200 transition-all duration-300 cursor-pointer">
-                  <CodiconFeedback />
-                </div>
-              </a>
-            </Tooltip>
+            <a
+              href="https://api.mylinks.com.vn"
+              className="p-2 rounded-sm hover:bg-gray-200 transition-all duration-300 cursor-pointer"
+            >
+              <LogosGithubIcon />
+            </a>
+            <a
+              href="https://www.mylinks.com.vn"
+              className="p-2 rounded-sm hover:bg-gray-200 transition-all duration-300 cursor-pointer"
+            >
+              <CodiconFeedback />
+            </a>
           </div>
         </div>
       </div>
-      <Form
-        onValuesChange={handleFormChange}
-        initialValues={settings}
-        labelCol={{ span: 5 }}
-        form={form}
-      >
-        <div className="max-w-4xl w-[800px] flex flex-col gap-4">
-          <ProviderSetting />
-          <OPENAISettings />
-          <SystemSetting />
-        </div>
-      </Form>
+      <form className="max-w-4xl w-[800px] flex flex-col gap-4">
+        <ProviderSetting />
+        <OPENAISettings />
+        <SystemSetting />
+      </form>
     </div>
   )
 }

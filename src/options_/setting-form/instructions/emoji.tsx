@@ -24,7 +24,7 @@ export const Emoji: React.FC<{
         {value}
       </div>
       {isPickerVisible && (
-        <div className="absolute z-10 mt-2">
+        <div className="absolute z-10">
           <EmojiPicker
             onEmojiClick={(e) => {
               setValue(e.emoji)
