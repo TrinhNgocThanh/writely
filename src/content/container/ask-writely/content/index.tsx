@@ -1,4 +1,4 @@
-import { Avatar, Button, Input, Tooltip } from 'antd'
+import { Avatar, Button, Input } from 'antd'
 import { forwardRef, PropsWithChildren, useCallback, useState } from 'react'
 import cx from 'classnames'
 import { ResultPanel } from '../result-panel'
@@ -112,25 +112,16 @@ const InputPanel: React.FC<{
 }
 
 const SendToWritelyTip: React.FC<PropsWithChildren> = ({ children }) => {
-  return (
-    <Tooltip
-      title={
-        <div className="flex items-center gap-1">
-          {i18next.t('Send to writely')} <IcOutlineKeyboardReturn />
-        </div>
-      }
-    >
-      {children}
-    </Tooltip>
-  )
+  return <div data-tooltip={i18next.t('Send to writely')}>{children}</div>
 }
 
 const DragTip: React.FC<PropsWithChildren> = () => {
   return (
-    <Tooltip title={<div>{i18next.t('Drag')}</div>}>
-      <div className="flex items-center justify-center w-full h-full">
-        <DashiconsMove className="text-gray-500 hover:text-gray-700" />
-      </div>
-    </Tooltip>
+    <div
+      data-tooltip={i18next.t('Drag')}
+      className="flex items-center justify-center w-full h-full"
+    >
+      <DashiconsMove className="text-gray-500 hover:text-gray-700" />
+    </div>
   )
 }

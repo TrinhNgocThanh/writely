@@ -350,5 +350,78 @@ template {
   display: none;
 }
 
+/* Định nghĩa riêng cho tooltip, tránh ảnh hưởng từ CSS của trang web */
+.writely-tooltip {
+  font-size: 14px;
+  font-weight: 500;
+  background-color: #333 !important;
+  color: #fff !important;
+  border-radius: 6px;
+  padding: 6px 10px;
+  text-align: center;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* Mũi tên tooltip */
+.writely-tooltip .ant-tooltip-arrow {
+  display: none; /* Ẩn mũi tên nếu không cần */
+}
+
+/* Style riêng cho Button */
+.writely-button {
+  color: white;
+  padding: 12px;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.writely-button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.header-container {
+  display: flex;
+  padding: 8px;
+  align-items: center;
+  background-color: #18181b; /* bg-zinc-900 */
+  cursor: move;
+  justify-content: space-between;
+  border-radius: 6px;
+  z-index: 99999;
+  position: relative;
+}
+
+.header-buttons {
+  display: flex;
+  align-items: center;
+}
+
+.operation-btn {
+  color: white;
+  padding: 12px;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+  border-radius: 6px;
+}
+
+.operation-btn:hover {
+  background-color: #3f3f46; /* hover:bg-zinc-700 */
+}
+
+.switch-btn {
+  background-color: #78716c; /* gray */
+}
+
+.switch-btn-active {
+  background-color: #92400e !important; /* amber */
+}
+
 @tailwind components;
 @tailwind utilities;

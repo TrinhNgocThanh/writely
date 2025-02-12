@@ -8,8 +8,8 @@ export const Replay: React.FC = () => {
 
   return (
     <BaseAction
-      tooltip={i18next.t('Regenerate')}
-      successTooltip={i18next.t('Success')}
+      // tooltip={i18next.t('Regenerate')}
+      // successTooltip={i18next.t('Success')}
       onClick={() => {
         setLoading(true)
         setIsError(false)
